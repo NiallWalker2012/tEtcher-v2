@@ -1,0 +1,16 @@
+[package]
+name = "tEtcher2"
+version = "0.2.0"
+edition = "2024"
+
+[dependencies]
+crossterm = "0.27"
+
+# Required only for Windows builds
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["winbase"] }
+
+[build-dependencies]
+cc = "1.0"
+
+

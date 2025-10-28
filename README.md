@@ -1,4 +1,4 @@
-# tEtcher 
+# tEtcher-v2
 tEtcher is an open-source terminal based ISO flasher designed to have the speed of cli commands like dd, but also an easier UI  
 It is inspired by well-known ISO flashers like dd and BalenaEtcher
 

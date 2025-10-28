@@ -18,9 +18,11 @@ use std::process::exit;
 mod iso;
 mod targ;
 mod flash_confirm;
+mod verify_confirm;
 
 unsafe extern "C" {
     fn flash(iso_path: *const c_char, dev_name: *const c_char);
+    fn verify(iso_path: *const c_char, dev_name: *const c_char) -> bool;
 }
 
 fn main() -> Result<()> {
@@ -48,23 +50,44 @@ fn main() -> Result<()> {
 
     execute!(stdout, cursor::Hide)?;
 
-    let confirms = flash_confirm::menu(&iso_path.display().to_string(), &dev_name);
-    if !confirms {
+    let confirms_flash = flash_confirm::menu(&iso_path.display().to_string(), &dev_name);
+    if !confirms_flash {
+        disable_raw_mode()?;
+        execute!(stdout, cursor::Show)?;
         exit(0);
     }
 
-    let time = Instant::now();
+    let flash_time = Instant::now();
+
+    let iso_c = CString::new(iso_path.to_string_lossy().into_owned()).unwrap();
+    let dev_c = CString::new(dev_name.as_str()).unwrap();
 
     unsafe {
-        let iso_c = CString::new(iso_path.to_string_lossy().into_owned()).unwrap();
-        let dev_c = CString::new(dev_name).unwrap();
+        
         flash(iso_c.as_ptr(), dev_c.as_ptr());
     }
 
-    let time_taken = time.elapsed();
+    let flash_time_taken = flash_time.elapsed();
     io::stdout().flush().unwrap();
-    println!("\nFinished flashing in {:.2} seconds", time_taken.as_secs_f64());
+    println!("\nFinished flashing in {:.2} seconds", flash_time_taken.as_secs_f64());
 
+    let confirms_verify: bool = verify_confirm::menu(&iso_path.display().to_string(), &dev_name);
+    if !confirms_verify {
+        disable_raw_mode()?;
+        execute!(stdout, cursor::Show)?;
+        exit(0);
+    }
+
+    let is_verified: bool;
+
+    unsafe {  
+        is_verified = verify(iso_c.as_ptr(), dev_c.as_ptr());
+    }
+    if is_verified {
+        println!("\nVerification success");
+    } else {
+        println!("\nVerification failed");
+    }
 
     disable_raw_mode()?;
     execute!(stdout, cursor::Show)?;

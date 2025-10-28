@@ -1,6 +1,6 @@
 # tEtcher-v2
-tEtcher is an open-source terminal based ISO flasher designed to have the speed of cli commands like dd, but also an easier UI  
-It is inspired by well-known ISO flashers like dd and BalenaEtcher
+tEtcher is an open-source terminal based ISO flasher designed to have the speed of cli commands like dd, but also an easier UI and safer  
+It is inspired by well-known ISO flashers like dd, Rufus and BalenaEtcher  
 
 
 # How to run:  
@@ -11,6 +11,8 @@ There are a few packages necessary to run tEtcher
 These include:
 1. GitHub.cli / gh - The command line GitHub utilities
 2. Cargo - To build the rust code
+3. GCC - To compile C code
+4. libssl-dev - Library for verify function
 
 # How to install GitHub CLI
 On Windows, you can install the GithHub command line using "winget install --id GitHub.cli"  

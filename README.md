@@ -42,7 +42,3 @@ On Linux, run "sudo apt install cargo" and verify the same way
 4. Go into the directory of the repository using "cd tEtcher"
 5. Make the file executable with the command "chmod +x shell_run.sh". You only need to do this once
 6. Run with the command "./shell_run.sh"  
-
-
-In the future I will integrate a verification option that verifies that the ISO on your computer matches the flashed image on the USB
-
